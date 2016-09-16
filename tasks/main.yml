@@ -1,0 +1,13 @@
+---
+- name: Install Leap via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 406510909, name: "Leap" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Leap via Homebrew
+  homebrew_cask:
+    name: leap
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
